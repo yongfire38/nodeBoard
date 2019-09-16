@@ -32,3 +32,5 @@ router.post('/board/write', (req, res) => {
         res.redirect('/');
     });
 });
+
+module.exports = router;

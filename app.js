@@ -6,8 +6,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 //라우터
-const index = require('./routes/index');
-const users = require('./routes/users');
+const index = require('./routers/index');
+const users = require('./routers/users');
 
 require('dotenv').config();
 
