@@ -14,7 +14,9 @@ const boardSchema = new Schema({
     contents: String,
     author: String,
     board_date: {type: Date, default: Date.now()},
-    comments : [commentSchema]
+    comments : [{type: Schema.Types.ObjectId, ref: 'Comments'}]
 });
+
+mongoose.model('Comments',commentSchema);
 
 module.exports = mongoose.model('board', boardSchema);
