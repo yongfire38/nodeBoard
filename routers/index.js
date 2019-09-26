@@ -3,7 +3,6 @@ const router = express.Router();
 
 //생성해 놓은 스키마(모델) 임포트
 const Board = require('../schema/board');
-const Comment = require('../schema/comment');
 
 //메인 페이지
 router.get('/', (req, res, next) => {
@@ -14,39 +13,27 @@ router.get('/', (req, res, next) => {
 
 //글 상세보기(아이디로 찾는다)
 router.get('/board/:id', (req, res) => {
-    Board.findOne({_id : req.params.id}).populate('comments').exec((err, board) => {
+    Board.findOne({_id : req.params.id}).exec((err, board) => {
         res.render('board', {title : '상세보기 및 댓글쓰기', board : board});
         console.log(board);
     });
 })
 
-/*
-router.get('/board/:id', (req, res) => {
-    Board.findOne({_id : req.params.id}, (err, board, comment) => {
-        res.render('board', {title : '상세보기 및 댓글쓰기', board : board, comment : comment});
-    });
-})
-*/
-
 
 //댓글 쓰기
 router.post('/board/comment/write/:id', (req, res) => {   
     
-    const board = Board.findOne({_id : req.body.id});
-    const comments = new Comment();   
+const board = Board.findOne({_id : req.body.id});
 
-    comments.contents = req.body.contents;
-    comments.author = req.body.author;   
-
-        board.updateOne({_id : req.body.id}, { $push: { comments:  comments} } , {upsert : true}, (err) =>{
+        board.updateOne({_id : req.body.id},  { $push: { comments:  {contents : req.body.contents, author : req.body.author } } }, {upsert : true}, (err) =>{
             if(err){
                 console.log(err);
                 res.redirect('/');
             }
-            
-            console.log(comments);
+                       
             res.redirect('/');
         });
+        
     
 
 });
