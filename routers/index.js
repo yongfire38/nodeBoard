@@ -44,7 +44,7 @@ router.get('/write', (req, res, next) => {
 });
 
 //insert 
-router.post('/board/write', (req, res) => {
+router.post('/write/writeContents', (req, res) => {
     const board = new Board();
     board.title = req.body.title;
     board.contents = req.body.contents;
