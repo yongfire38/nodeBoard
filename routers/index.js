@@ -43,6 +43,13 @@ router.get('/write', (req, res, next) => {
     res.render('write', {title : '글쓰기'});
 });
 
+//글 수정 페이지 이동
+router.get('/update/:id', (req, res, next) => {
+    Board.findOne({_id : req.params.id}).exec()
+    
+    res.render('update');
+})
+
 //insert 
 router.post('/write/writeContents', (req, res) => {
     const board = new Board();
