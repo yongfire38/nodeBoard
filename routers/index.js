@@ -12,12 +12,12 @@ router.get('/', (req, res, next) => {
 });
 
 //글 상세보기(아이디로 찾는다)
-router.get('/board/:id', (req, res) => {
+ router.get('/board/:id', (req, res) => {
     Board.findOne({_id : req.params.id}).exec((err, board) => {
         res.render('board', {title : '상세보기 및 댓글쓰기', board : board});
         console.log(board);
     });
-})
+}) 
 
 
 //댓글 쓰기
@@ -45,9 +45,11 @@ router.get('/write', (req, res, next) => {
 
 //글 수정 페이지 이동
 router.get('/update/:id', (req, res, next) => {
-    Board.findOne({_id : req.params.id}).exec()
-    
-    res.render('update');
+
+    Board.findOne({_id : req.params.id}).exec((err, board) => {
+        res.render('update', {title : '글 수정', board : board});
+        console.log(board);
+    });
 })
 
 //insert 
@@ -56,7 +58,7 @@ router.post('/write/writeContents', (req, res) => {
     board.title = req.body.title;
     board.contents = req.body.contents;
     board.author = req.body.author;
-
+    
     board.save(err => {
         if(err){
             console.log(err);
@@ -65,5 +67,25 @@ router.post('/write/writeContents', (req, res) => {
         res.redirect('/');
     });
 });
+
+//update
+router.post('/update/updateContents/:id', (req, res) => {
+
+    const board = Board.findOne({_id : req.body.id});
+
+    board.updateOne({_id : req.body.id},  { $set: { title : req.body.title, contents : req.body.contents, author : req.body.author  } }, (err) =>{
+
+        if(err){
+            console.log(err);
+            res.redirect('/');
+        }
+                   
+        res.redirect('/');
+    });
+
+    
+    
+}) 
+
 
 module.exports = router;
